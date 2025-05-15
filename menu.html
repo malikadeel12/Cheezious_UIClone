@@ -2,10 +2,14 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous"
+    />
     <title>Our Menu</title>
     <style>
         body {
@@ -106,6 +110,7 @@
             padding: 15px;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
 
         .cart-container ul {
@@ -139,34 +144,72 @@
     <div class="cart-container">
         <h2>Shopping Cart</h2>
         <ul id="cart-items"></ul>
-        <button type="button" class="checkout-btn" id="order" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button
+            type="button"
+            class="checkout-btn"
+            id="order"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+        >
             Order Now
         </button>
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div
+            class="modal fade"
+            id="exampleModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+        >
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Order Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
                     </div>
                     <div class="modal-body">
                         <form id="orderForm">
                             <div class="mb-3">
                                 <label for="customerName" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="customerName" required>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="customerName"
+                                    required
+                                />
                             </div>
                             <div class="mb-3">
                                 <label for="customerPhone" class="form-label">Phone</label>
-                                <input type="text" class="form-control" id="customerPhone" required>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="customerPhone"
+                                    required
+                                />
                             </div>
                             <div class="mb-3">
                                 <label for="customerAddress" class="form-label">Address</label>
-                                <textarea class="form-control" id="customerAddress" rows="2" required></textarea>
+                                <textarea
+                                    class="form-control"
+                                    id="customerAddress"
+                                    rows="2"
+                                    required
+                                ></textarea>
                             </div>
                             <h6>Cart Items:</h6>
                             <ul id="modal-cart-items" class="list-group mb-3"></ul>
                             <h5>Total Price: <span id="modal-total-price">Rs. 0</span></h5>
-                            <button type="submit" class="btn btn-primary w-100"id="placeOrderBtn">Place Order</button>
+                            <button
+                                type="submit"
+                                class="btn btn-primary w-100"
+                                id="placeOrderBtn"
+                            >
+                                Place Order
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -180,30 +223,29 @@
     </div>
 
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        fetch("http://localhost:8002/items/all")
-    .then(response => response.json())
-    .then(data => {
-        if (Array.isArray(data.items)) {
-            displayMenuItems(data.items);
-        } else {
-            console.error("Unexpected data format:", data);
-        }
-    })
-    .catch(error => console.error(error));
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("http://54.89.235.247:5000/items/all")  // Updated URL here
+                .then((response) => response.json())
+                .then((data) => {
+                    if (Array.isArray(data.items)) {
+                        displayMenuItems(data.items);
+                    } else {
+                        console.error("Unexpected data format:", data);
+                    }
+                })
+                .catch((error) => console.error("Fetch menu items error:", error));
+        });
 
-});
+        let cart = [];
 
-let cart = [];
+        function displayMenuItems(items) {
+            const menuContainer = document.getElementById("menu-items");
+            menuContainer.innerHTML = "";
 
-function displayMenuItems(items) {
-    const menuContainer = document.getElementById("menu-items");
-    menuContainer.innerHTML = "";
-
-    items.forEach(item => {
-        const menuItemHTML = `
+            items.forEach((item) => {
+                const menuItemHTML = `
             <div class="card">
-                <img src="${item.imageUrl || 'https://via.placeholder.com/150'}" alt="${item.name}">
+                <img src="${item.imageUrl || "https://via.placeholder.com/150"}" alt="${item.name}" />
                 <h3>${item.categorize || "Uncategorized"}</h3>
                 <h3>${item.name || "No Name"}</h3>
                 <p>${item.description || "No Description Available"}</p>
@@ -211,103 +253,128 @@ function displayMenuItems(items) {
                 <button class="order-btn" onclick="addToCart('${item.name}', ${item.price})">Add to Cart</button>
             </div>
         `;
-        menuContainer.innerHTML += menuItemHTML;
-    });
-}
-
-function addToCart(itemName, itemPrice) {
-    let itemIndex = cart.findIndex(item => item.name === itemName);
-    if (itemIndex !== -1) {
-        cart[itemIndex].quantity += 1;
-    } else {
-        cart.push({ name: itemName, price: itemPrice, quantity: 1 });
-    }
-    updateCartDisplay();
-}
-
-function removeFromCart(itemName) {
-    let itemIndex = cart.findIndex(item => item.name === itemName);
-    if (itemIndex !== -1) {
-        if (cart[itemIndex].quantity > 1) {
-            cart[itemIndex].quantity -= 1;
-        } else {
-            cart.splice(itemIndex, 1);
+                menuContainer.innerHTML += menuItemHTML;
+            });
         }
-    }
-    updateCartDisplay();
-}
 
-function updateCartDisplay() {
-    let cartItemsContainer = document.getElementById("cart-items");
-    let modalCartContainer = document.getElementById("modal-cart-items");
-    let modalTotalPriceElement = document.getElementById("modal-total-price");
+        function addToCart(itemName, itemPrice) {
+            let itemIndex = cart.findIndex((item) => item.name === itemName);
+            if (itemIndex !== -1) {
+                cart[itemIndex].quantity += 1;
+            } else {
+                cart.push({ name: itemName, price: itemPrice, quantity: 1 });
+            }
+            updateCartDisplay();
+        }
 
-    cartItemsContainer.innerHTML = "";
-    modalCartContainer.innerHTML = "";
-    let total = 0;
+        function removeFromCart(itemName) {
+            let itemIndex = cart.findIndex((item) => item.name === itemName);
+            if (itemIndex !== -1) {
+                if (cart[itemIndex].quantity > 1) {
+                    cart[itemIndex].quantity -= 1;
+                } else {
+                    cart.splice(itemIndex, 1);
+                }
+            }
+            updateCartDisplay();
+        }
 
-    cart.forEach(item => {
-        let cartItem = document.createElement("li");
-        cartItem.innerHTML = `${item.name} - ${item.quantity} x Rs.${item.price} 
-            <button onclick="removeFromCart('${item.name}')">Remove</button>`;
-        cartItemsContainer.appendChild(cartItem);
+        function updateCartDisplay() {
+            let cartItemsContainer = document.getElementById("cart-items");
+            let modalCartContainer = document.getElementById("modal-cart-items");
+            let modalTotalPriceElement = document.getElementById("modal-total-price");
 
-        let modalItem = document.createElement("li");
-        modalItem.innerHTML = `${item.name} - ${item.quantity} x Rs.${item.price}`;
-        modalCartContainer.appendChild(modalItem);
+            cartItemsContainer.innerHTML = "";
+            modalCartContainer.innerHTML = "";
+            let total = 0;
 
-        total += item.quantity * item.price;
-    });
+            cart.forEach((item) => {
+                let cartItem = document.createElement("li");
+                cartItem.innerHTML = `${item.name} - ${item.quantity} x Rs.${item.price} 
+            <button class="btn btn-sm btn-danger ms-2" onclick="removeFromCart('${item.name}')">Remove</button>`;
+                cartItemsContainer.appendChild(cartItem);
 
-    modalTotalPriceElement.innerText = `Rs. ${total}`;
-}
+                let modalItem = document.createElement("li");
+                modalItem.className = "list-group-item";
+                modalItem.innerText = `${item.name} - ${item.quantity} x Rs.${item.price}`;
+                modalCartContainer.appendChild(modalItem);
 
-// Add event listener for order submission
-document.getElementById("orderForm").addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevents form from reloading page
+                total += item.quantity * item.price;
+            });
 
-    let name = document.getElementById("customerName").value;
-    let phone = document.getElementById("customerPhone").value;
-    let address = document.getElementById("customerAddress").value;
+            modalTotalPriceElement.innerText = `Rs. ${total}`;
+        }
 
-    if (!name || !phone || !address) {
-        alert("Please fill in all fields.");
-        return;
-    }
-    let totalPrice = parseFloat(document.getElementById("modal-total-price").innerText.replace("Rs. ", "")) || 0;
-    let orderDetails = {
-        customerName: name,
-        customerPhone: phone,
-        customerAddress: address,
-        cart_items: cart,
-        totalPrice: totalPrice
-    };
-    fetch("http://localhost:8002/orders/orderdata", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(orderDetails)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("Order Response:", data);
-        alert("Order placed successfully!");
+        // Add event listener for order submission
+        document.getElementById("orderForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevents form from reloading page
 
-        // Reset cart and form after successful order
-        cart = cart || [];
+            let name = document.getElementById("customerName").value.trim();
+            let phone = document.getElementById("customerPhone").value.trim();
+            let address = document.getElementById("customerAddress").value.trim();
 
-        updateCartDisplay();
-        document.getElementById("orderForm").reset();
-        let modal = bootstrap.Modal.getInstance(document.getElementById("exampleModal"));
-        modal.hide();
-    });
-});
+            if (!name || !phone || !address) {
+                alert("Please fill in all fields");
+                return;
+            }
 
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
 
+            let orderItems = cart.map((item) => ({
+                itemName: item.name,
+                price: item.price,
+                quantity: item.quantity,
+            }));
+
+            let totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+            const orderData = {
+                name: name,
+                phone: phone,
+                address: address,
+                orderItems: orderItems,
+                totalPrice: totalPrice,
+            };
+
+            fetch("http://54.89.235.247:5000/orders/create", {  // Updated order POST URL here
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(orderData),
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Failed to place order");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    alert("Order placed successfully!");
+                    // Reset form and cart
+                    document.getElementById("orderForm").reset();
+                    cart = [];
+                    updateCartDisplay();
+                    // Close modal manually using Bootstrap 5
+                    let modalElement = document.getElementById("exampleModal");
+                    let modal = bootstrap.Modal.getInstance(modalElement);
+                    modal.hide();
+                })
+                .catch((error) => {
+                    console.error("Error placing order:", error);
+                    alert("Error placing order. Please try again later.");
+                });
+        });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYdZH6Lc9N6Ug7lrE37bNQ7z0e1R68jRHbF/RyL5jKtgO2v9uTg9bj77"
+        crossorigin="anonymous"
+    ></script>
 </body>
 
 </html>

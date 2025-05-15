@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Fetch and display items
 function fetchItems() {
-    axios.get('http://localhost:8002/items/all')
+    axios.get('http://54.89.235.247:5000/items/all')
         .then(response => {
             const items = response.data.items || response.data;
             let itemsTableBody = document.getElementById('itemsTableBody');
@@ -25,7 +25,7 @@ function fetchItems() {
                         <td>Rs. ${item.price}</td>
                         <td><img src="${item.imageUrl}" alt="Item Image" style="width: 50px; height: 50px;"></td>
                         <td>
-                            <button class="btn btn-warning btn-sm" onclick="editItem('${item._id}', '${item.name}','${item.categorize}', '${item.description}', '${item.price}', '${item.imageUrl}')">Edit</button>
+                            <button class="btn btn-warning btn-sm" onclick="editItem('${item._id}', '${item.name}', '${item.categorize}', '${item.description}', '${item.price}', '${item.imageUrl}')">Edit</button>
                             <button class="btn btn-danger btn-sm" onclick="deleteItem('${item._id}')">Delete</button>
                         </td>
                     </tr>
@@ -45,7 +45,7 @@ function addItem() {
         imageUrl: document.getElementById("itemImageUrl").value
     };
 
-    axios.post('http://localhost:8002/items/add', newItem, {
+    axios.post('http://54.89.235.247:5000/items/add', newItem, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     })
         .then(() => {
@@ -58,7 +58,7 @@ function addItem() {
 // Delete an item
 function deleteItem(itemId) {
     if (confirm("Are you sure you want to delete this item?")) {
-        axios.delete(`http://localhost:8002/items/delete/${itemId}`, {
+        axios.delete(`http://54.89.235.247:5000/items/delete/${itemId}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         })
             .then(() => {
@@ -73,7 +73,7 @@ function deleteItem(itemId) {
 }
 
 // Edit an item
-function editItem(itemId, name, description, price, imageUrl) {
+function editItem(itemId, name, categorize, description, price, imageUrl) {
     document.getElementById("itemName").value = name;
     document.getElementById("itemcatag").value = categorize;
     document.getElementById("itemDescription").value = description;
@@ -99,7 +99,7 @@ function updateItem(itemId) {
         imageUrl: document.getElementById("itemImageUrl").value
     };
 
-    axios.put(`http://localhost:8002/items/update/${itemId}`, updatedItem, {
+    axios.put(`http://54.89.235.247:5000/items/update/${itemId}`, updatedItem, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     })
         .then(() => {
@@ -121,9 +121,10 @@ function updateItem(itemId) {
         })
         .catch(error => console.error(error));
 }
+
 document.addEventListener("DOMContentLoaded", async function () {
     try {
-        const response = await fetch("http://localhost:8002/orders/orderdata");
+        const response = await fetch("http://54.89.235.247:5000/orders/orderdata");
         const data = await response.json();
         console.log("Fetched Orders:", data); // Debugging Log
 
