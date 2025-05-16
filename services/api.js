@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const API = axios.create({
-    baseURL: "https://54.89.235.247:5000"
+    baseURL: "https://ce49-54-89-235-247.ngrok-free.app"
 });
 
 export const getOrders = () => API.get("/orders/orderdata");
