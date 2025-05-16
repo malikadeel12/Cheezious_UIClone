@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Fetch and display items
 function fetchItems() {
-    axios.get('https://ce49-54-89-235-247.ngrok-free.app/items/all')
+    axios.get('https://oc51-54-89-235-247.ngrok-free.app/items/all')
         .then(response => {
             const items = response.data.items || response.data;
             let itemsTableBody = document.getElementById('itemsTableBody');
@@ -45,7 +45,7 @@ function addItem() {
         imageUrl: document.getElementById("itemImageUrl").value
     };
 
-    axios.post('https://ce49-54-89-235-247.ngrok-free.app/items/add', newItem, {
+    axios.post('https://oc51-54-89-235-247.ngrok-free.app/items/add', newItem, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     })
         .then(() => {
@@ -58,7 +58,7 @@ function addItem() {
 // Delete an item
 function deleteItem(itemId) {
     if (confirm("Are you sure you want to delete this item?")) {
-        axios.delete(`https://ce49-54-89-235-247.ngrok-free.app/items/delete/${itemId}`, {
+        axios.delete(`https://oc51-54-89-235-247.ngrok-free.app/items/delete/${itemId}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         })
             .then(() => {
@@ -99,7 +99,7 @@ function updateItem(itemId) {
         imageUrl: document.getElementById("itemImageUrl").value
     };
 
-    axios.put(`https://ce49-54-89-235-247.ngrok-free.app/items/update/${itemId}`, updatedItem, {
+    axios.put(`https://oc51-54-89-235-247.ngrok-free.app/items/update/${itemId}`, updatedItem, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     })
         .then(() => {
@@ -124,7 +124,7 @@ function updateItem(itemId) {
 
 document.addEventListener("DOMContentLoaded", async function () {
     try {
-        const response = await fetch("https://ce49-54-89-235-247.ngrok-free.app/orders/orderdata");
+        const response = await fetch("https://oc51-54-89-235-247.ngrok-free.app/orders/orderdata");
         const data = await response.json();
         console.log("Fetched Orders:", data); // Debugging Log
 
