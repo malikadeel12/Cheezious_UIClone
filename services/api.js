@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const API = axios.create({
-    baseURL: "http://54.89.235.247:5000"
+    baseURL: "https://54.89.235.247:5000"
 });
 
 export const getOrders = () => API.get("/orders/orderdata");

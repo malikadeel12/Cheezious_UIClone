@@ -133,7 +133,7 @@
 
                 try {
                     const response = await axios.post(
-                        "http://54.89.235.247:5000/users/login",
+                        "https://54.89.235.247:5000/users/login",
                         { email, password },
                         {
                             headers: {
@@ -164,7 +164,7 @@
         document
             .getElementById("google-login")
             .addEventListener("click", () => {
-                window.location.href = "http://54.89.235.247:5000/auth/google";
+                window.location.href = "https://54.89.235.247:5000/auth/google";
             });
     </script>
 </body>

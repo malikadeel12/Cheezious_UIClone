@@ -224,7 +224,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            fetch("http://54.89.235.247:5000/items/all")  // Updated URL here
+            fetch("https://54.89.235.247:5000/items/all")  // Updated URL here
                 .then((response) => response.json())
                 .then((data) => {
                     if (Array.isArray(data.items)) {
@@ -339,7 +339,7 @@
                 totalPrice: totalPrice,
             };
 
-            fetch("http://54.89.235.247:5000/orders/create", {  // Updated order POST URL here
+            fetch("https://54.89.235.247:5000/orders/create", {  // Updated order POST URL here
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
